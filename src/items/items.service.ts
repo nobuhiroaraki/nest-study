@@ -1,11 +1,12 @@
+import { ItemRepository } from './item.repository';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemStatus } from './item-status.enum';
-import { Item } from './../../dist/items/item.model';
+import { Item } from '../entities/item.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ItemsService {
+  constructor(private readonly ItemRepository: ItemRepository) {}
   private items: Item[] = [];
   findAll(): Item[] {
     return this.items;
@@ -19,14 +20,8 @@ export class ItemsService {
     return found;
   }
 
-  create(createItemDto: CreateItemDto): Item {
-    const item: Item = {
-      id: uuid(),
-      ...createItemDto,
-      status: ItemStatus.ON_SALE,
-    };
-    this.items.push(item);
-    return item;
+  async create(createItemDto: CreateItemDto): Promise<Item> {
+    return await this.ItemRepository.createItem(createItemDto);
   }
 
   updateStatus(id: string): Item {
