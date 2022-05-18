@@ -8,8 +8,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 export class ItemsService {
   constructor(private readonly ItemRepository: ItemRepository) {}
   private items: Item[] = [];
-  findAll(): Item[] {
-    return this.items;
+  async findAll(): Promise<Item[]> {
+    return await this.ItemRepository.find();
   }
 
   findById(id: string): Item {
@@ -24,11 +24,11 @@ export class ItemsService {
     return await this.ItemRepository.createItem(createItemDto);
   }
 
-  updateStatus(id: string): Item {
-    const item = this.findById(id);
-    item.status = ItemStatus.SOLD_OUT;
-    return item;
-  }
+  // updateStatus(id: string): Item {
+  //   const item = this.findById(id);
+  //   item.status = ItemStatus.SOLD_OUT;
+  //   return item;
+  // }
 
   delete(id: string): void {
     this.items = this.items.filter((item) => item.id !== id);

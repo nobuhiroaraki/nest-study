@@ -1,3 +1,4 @@
+import { ItemRepository } from './item.repository';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
 import {
@@ -16,8 +17,8 @@ import { Item } from '../entities/item.entity';
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
   @Get()
-  findAll(): Item[] {
-    return this.itemsService.findAll();
+  async findAll(): Promise<Item[]> {
+    return await this.itemsService.findAll();
   }
 
   @Get(':id')
@@ -30,10 +31,10 @@ export class ItemsController {
     return await this.itemsService.create(createItemDto);
   }
 
-  @Patch(':id')
-  updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
-    return this.itemsService.updateStatus(id);
-  }
+  // @Patch(':id')
+  // updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
+  //   return this.itemsService.updateStatus(id);
+  // }
 
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: string): void {
