@@ -1,6 +1,6 @@
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemStatus } from './item-status.enum';
-import { Item } from './../../dist/items/item.mode.d';
+import { Item } from './../../dist/items/item.model';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
