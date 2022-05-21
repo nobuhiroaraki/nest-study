@@ -1,4 +1,3 @@
-import { ItemRepository } from './item.repository';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
 import {
@@ -8,8 +7,8 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
+  Patch,
 } from '@nestjs/common';
 import { Item } from '../entities/item.entity';
 
@@ -22,8 +21,8 @@ export class ItemsController {
   }
 
   @Get(':id')
-  findById(@Param('id', ParseUUIDPipe) id: string): Item {
-    return this.itemsService.findById(id);
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+    return await this.itemsService.findById(id);
   }
 
   @Post()
@@ -31,13 +30,13 @@ export class ItemsController {
     return await this.itemsService.create(createItemDto);
   }
 
-  // @Patch(':id')
-  // updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
-  //   return this.itemsService.updateStatus(id);
-  // }
+  @Patch(':id')
+  async updateStatus(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+    return await this.itemsService.updateStatus(id);
+  }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string): void {
-    this.itemsService.delete(id);
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    await this.itemsService.delete(id);
   }
 }
