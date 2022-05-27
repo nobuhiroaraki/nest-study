@@ -12,11 +12,14 @@ import {
   Post,
   Patch,
   UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { Item } from '../entities/item.entity';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 
 @Controller('items')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
   @Get()
