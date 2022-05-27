@@ -1,3 +1,5 @@
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtStrategy } from './jwt.strategy';
 import { UserRepository } from './user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -12,13 +14,14 @@ import { JwtModule } from '@nestjs/jwt';
     //デフォルトの認証方法をjwtに設定
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'seceretKey123',
+      secret: 'secretKey123',
       signOptions: {
         expiresIn: 3600, //JWTの有効期限(秒)
       },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  exports: [JwtStrategy, JwtAuthGuard],
 })
 export class AuthModule {}
