@@ -2,7 +2,11 @@ import { User } from './../entities/user.entity';
 import { ItemRepository } from './item.repository';
 import { CreateItemDto } from './dto/create-item.dto';
 import { Item } from '../entities/item.entity';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ItemStatus } from './item-status.enum';
 
 @Injectable()
@@ -25,8 +29,11 @@ export class ItemsService {
     return await this.ItemRepository.createItem(createItemDto, user);
   }
 
-  async updateStatus(id: string): Promise<Item> {
+  async updateStatus(id: string, user: User): Promise<Item> {
     const item = await this.findById(id);
+    if (item.userId === user.id) {
+      throw new BadRequestException('自身の商品を購入することはできません');
+    }
     item.status = ItemStatus.SOLD_OUT;
     item.updatedAt = new Date().toISOString();
     await this.ItemRepository.save(item);
