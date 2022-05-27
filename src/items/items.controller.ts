@@ -1,3 +1,4 @@
+import { User } from './../entities/user.entity';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
@@ -13,6 +14,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Item } from '../entities/item.entity';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
 
 @Controller('items')
 export class ItemsController {
@@ -29,7 +31,10 @@ export class ItemsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() createItemDto: CreateItemDto): Promise<Item> {
+  async create(
+    @Body() createItemDto: CreateItemDto,
+    @GetUser() user: User,
+  ): Promise<Item> {
     return await this.itemsService.create(createItemDto);
   }
 
