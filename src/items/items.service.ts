@@ -1,3 +1,4 @@
+import { User } from './../entities/user.entity';
 import { ItemRepository } from './item.repository';
 import { CreateItemDto } from './dto/create-item.dto';
 import { Item } from '../entities/item.entity';
@@ -20,8 +21,8 @@ export class ItemsService {
     return found;
   }
 
-  async create(createItemDto: CreateItemDto): Promise<Item> {
-    return await this.ItemRepository.createItem(createItemDto);
+  async create(createItemDto: CreateItemDto, user: User): Promise<Item> {
+    return await this.ItemRepository.createItem(createItemDto, user);
   }
 
   async updateStatus(id: string): Promise<Item> {
